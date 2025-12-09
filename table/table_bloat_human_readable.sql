@@ -8,7 +8,7 @@ pg_size_pretty(extra_size::numeric) AS extra_size,
 fillfactor,
 pg_size_pretty(bloat_bytes::numeric) AS bloat_size,
 ROUND(bloat_pct::numeric,1) AS bloat_pct,
-CASE WHEN is_na THEN 'Bogus' ELSE null END AS bogus
+CASE WHEN is_na or extra_size < 0 THEN 'Bogus' ELSE null END AS bogus
 FROM (
 SELECT schemaname, tblname, bs*tblpages AS real_size,
   (tblpages-est_tblpages)*bs AS extra_size,
